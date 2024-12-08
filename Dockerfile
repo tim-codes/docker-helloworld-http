@@ -1,20 +1,13 @@
-FROM debian:jessie
+FROM debian:bookworm
 
-LABEL maintainer "opsxcq@strm.sh"
+LABEL maintainer="tim@exxo.sh"
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    python &&\
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y python3 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY main.sh /
-RUN mkdir /www
-
+COPY serve.py ./
 EXPOSE 80
-
-WORKDIR /www
-
-ENTRYPOINT ["/main.sh"]
-
+CMD ["python3", "./serve.py"]
